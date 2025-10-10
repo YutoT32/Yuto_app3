@@ -12,16 +12,12 @@ const connection = mysql.createConnection({
     database: 'app3'
 });
 
-app.get('/top', (req, res) => {
+app.get('/', (req, res) => {
     res.render('top.ejs');
 });
 
 app.get('/index', (req, res) => {
-    "SELECT * FROM items;",
-    (error, results) => {
-        console.log(results);
-        res.render('index.ejs');
-    }
+    res.render('index.ejs');
 });
 
 app.listen(3000);
