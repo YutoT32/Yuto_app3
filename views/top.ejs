@@ -7,22 +7,54 @@
   </head>
   <body>
     <header>
-      <nav>
-        <div class="logo">SDEV</div>
+      <!-- ナビゲーションリンクをnavタグでグループ化 -->
+      <nav class="header-nav" role="navigation" aria-label="global navigation">
+        <div class="logo">
+          <a href="/">ECサイト-app3</a>
+        </div>
         <div class="nav-items">
-          <a href="#">ホーム</a>
-          <a href="#">カート</a>
-          <a href="#">ログイン</a>
+          <a href="/">ホーム</a>
+          <a href="/cart">カート</a>
+          <a href="/login">ログイン</a>
         </div>
       </nav>
+
     </header>
 
     <div class="container">
-      <!-- サイドバー -->
-       <h3>カテゴリー</h3>
+      <!-- asideタグでサイドバーを明確化 -->
+      <aside class="sidebar" role="complementary" aria-label="category list">
+        <h3>カテゴリー </h3>
+        <ul>
+          <li><a href="#">衣類１</a></li>
+          <li><a href="#">衣類２</a></li>
+          <li><a href="#">衣類３</a></li>
+        </ul>
+      </aside>
+
+      <!-- メインコンテンツ -->
+      <main role="main">
+        <h2>おすすめ商品</h2>
+        <div class="products-grid">
+          <!-- 商品表示-->
+          <div class="product-card">
+            <h3>Tシャツ</h3>
+          </div>
+          <div class="product-card">
+            <h3>ズボン</h3>
+          </div>
+          <div class="product-card">
+            <h3>セーター</h3>
+          </div>
+          <div class="product-card">
+            <h3>ワイシャツ</h3>
+          </div>
+        </div>
+      </main>
     </div>
-    <h2>Hello world!</h2>
-    <h2>Here is top.ejs</h2>
-    <a href="/index">Go to Index</a>
+
+    <footer>
+      <p>&copy; 2025 Yuto Takahashi All Rights Reserved.</p>
+    </footer>
   </body>
 </html>
