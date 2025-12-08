@@ -1,8 +1,11 @@
+// ExpressとMySQLモジュールの読み込み
 const express = require('express');
 const mysql = require('mysql');
+
+//Expressアプリケーションの作成
 const app = express();
 
-//publicフォルダを静的ファイルのルートとして指定
+//静的ファイル（public配下）をHTTPで配信する
 app.use(express.static('public'));
 
 //データベースに接続するための設定
@@ -13,7 +16,7 @@ const connection = mysql.createConnection({
     database: 'app3'
 });
 
-
+//ルーティングを設定
 //トップ画面（top.ejs）を表示するルーティング
 app.get('/', (req, res) => {
     res.render('top.ejs');
@@ -34,6 +37,7 @@ app.get('/new', (req, res) => {
 });
 
 //サーバーを起動
+//ポート3000で待ち受け開始
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });

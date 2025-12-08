@@ -13,7 +13,7 @@
           <a href="/">ECサイト-app3</a>
         </div>
         <div class="nav-items">
-          <a href="/">ホーム</a>
+          <a href="/index">一覧</a>
           <a href="/cart">カート</a>
           <a href="/login">ログイン</a>
         </div>
@@ -21,6 +21,23 @@
 
     </header>
     <div class="container">
+      <aside class="sidebar" role="complementary" aria-label="category list">
+        <h3>カテゴリー </h3>
+
+        <!-- JavascriptのforEachでcategoriesを表示 -->
+        <% const categories = [
+          {id: 1, name: '衣類１'}, 
+          {id: 2, name: '衣類２'}, 
+          {id: 3, name: '衣類３'}
+        ]; %>
+        <ul>
+          <% categories.forEach((category) => { %>
+            <li><%= category.name %></li>
+          <% }); %>
+        </ul>
+        
+      </aside>
+
 
     </div>
     <footer>
