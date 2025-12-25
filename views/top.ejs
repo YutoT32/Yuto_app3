@@ -29,9 +29,9 @@
 
         <!-- JavascriptのforEachでcategoriesを表示 -->
         <% const categories = [
-          {id: 1, name: '衣類１'}, 
-          {id: 2, name: '衣類２'}, 
-          {id: 3, name: '衣類３'}
+          {id: 1, name: 'Tシャツ'}, 
+          {id: 2, name: 'ワイシャツ'}, 
+          {id: 3, name: 'ズボン'}
         ]; %>
         <ul>
           <% categories.forEach((category) => { %>
@@ -46,12 +46,14 @@
         <h2>おすすめ商品</h2>
 
         <!-- JavascriptのforEachでrecommendedProductsを表示 -->
+        <!--
         <% const recommendedProducts = [
           {id: 1, name: 'Tシャツ', image: '/images/Tシャツ.jpg'}, 
           {id: 2, name: 'ズボン', image: '/images/ズボン.jpg'}, 
           {id: 3, name: 'セーター', image: '/images/セーター.jpg'}, 
           {id: 4, name: 'ワイシャツ', image: '/images/ワイシャツ.jpg'}
         ]; %>
+        -->
         <div class="products-grid">
           <!-- 商品表示-->
           <% recommendedProducts.forEach((product) => { %>
