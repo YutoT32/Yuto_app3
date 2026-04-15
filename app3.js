@@ -35,7 +35,6 @@ app.get('/index', (req, res) => {
                 return res.status(500).send('DB error');
             }
 
-
             console.log(results);
             //取得したデータをindex.ejsに渡して表示
             res.render('index.ejs', {Products: results});
@@ -43,8 +42,14 @@ app.get('/index', (req, res) => {
     );
 });
 
-app.get('/new', (req, res) => {
-    res.render('new.ejs');
+//カート画面（cart.ejs）を表示するルーティング
+app.get('/cart', (req, res) => {
+    res.render('cart.ejs');
+});
+
+//ログイン画面（login.ejs）を表示するルーティング
+app.get('/login', (req, res) => {
+    res.render('login.ejs');
 });
 
 //サーバーを起動
