@@ -8,18 +8,31 @@
   </head>
   <body>
     <header>
-      <!-- ナビゲーションリンクをnavタグでグループ化 -->
+      <!-- 上段：ロゴ・検索・カート/ログイン -->
       <nav class="header-nav" role="navigation" aria-label="global navigation">
         <div class="logo">
-          <a href="/">ECサイト-app3</a>
+          <a href="/">SHOP</a>
         </div>
+        <!-- 検索バー -->
+        <div class="header-search">
+          <input type="text" class="search-input" placeholder="商品を検索...">
+        </div>
+        <!-- カート・ログインリンク -->
         <div class="nav-items">
-          <a href="/index">一覧</a>
           <a href="/cart">カート</a>
           <a href="/login">ログイン</a>
         </div>
       </nav>
 
+      <!-- 下段：カテゴリーナビゲーションバー -->
+      <nav class="category-nav" role="navigation" aria-label="category navigation">
+        <ul>
+          <li><a href="/index">すべて</a></li>
+          <li><a href="#">トップス</a></li>
+          <li><a href="#">パンツ</a></li>
+          <li><a href="#">セール</a></li>
+        </ul>
+      </nav>
     </header>
 
     <div class="container">
@@ -48,10 +61,10 @@
         <!-- JavascriptのforEachでrecommendedProductsを表示 -->
         <!--
         <% const recommendedProducts = [
-          {id: 1, name: 'Tシャツ', image: '/images/Tシャツ.jpg'}, 
-          {id: 2, name: 'ズボン', image: '/images/ズボン.jpg'}, 
-          {id: 3, name: 'セーター', image: '/images/セーター.jpg'}, 
-          {id: 4, name: 'ワイシャツ', image: '/images/ワイシャツ.jpg'}
+          {id: 1, name: 'Tシャツ', image: '/images/tops/Tシャツ.jpg'}, 
+          {id: 2, name: 'ズボン', image: '/images/pants/ズボン.jpg'}, 
+          {id: 3, name: 'セーター', image: '/images/sweaters/セーター.jpg'}, 
+          {id: 4, name: 'ワイシャツ', image: '/images/shirts/ワイシャツ.jpg'}
         ]; %>
         -->
         <div class="products-grid">

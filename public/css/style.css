@@ -10,32 +10,90 @@ body {
 }
 
 /* ヘッダー */
-/* ロゴ、複数のナビゲーションリンクが並ぶ */
 header {
   background: #ffffff;
   border-bottom: 1px solid #e5e5e5;
+  position: sticky; /* スクロールしても上部に固定 */
+  top: 0;
+  z-index: 100;
 }
+
+/* 上段：ロゴ・検索・ナビ */
 .header-nav {
   max-width: 1100px;
   margin: 0 auto;
   padding: 12px 16px;
-  display: flex; /* 横並び */
-  align-items: center; /* 縦方向を中央揃え */
-  justify-content: space-between; /* 左端と右端に配置＋間を自動で埋める */
+  display: flex;         /* 横並び */
+  align-items: center;   /* 縦方向を中央揃え */
+  gap: 16px;             /* 各要素の間隔 */
 }
+
+/* ロゴ：赤色でユニクロ風 */
 .header-nav .logo a {
-  font-weight: 700;
-  font-size: 18px;
+  font-weight: 900;
+  font-size: 22px;
   text-decoration: none;
+  color: #e40000;        /* ユニクロカラー（赤） */
+  letter-spacing: 2px;
+}
+
+/* 検索バー：中央に配置して横幅を広く */
+.header-search {
+  flex: 1; /* 余ったスペースをすべて使う */
+}
+.search-input {
+  width: 100%;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;   /* 角丸で検索バーらしく */
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+.search-input:focus {
+  border-color: #333;
+}
+
+/* カート・ログインリンク */
+.header-nav .nav-items {
+  display: flex;
+  gap: 16px;
+  white-space: nowrap;   /* 改行させない */
 }
 .header-nav .nav-items a {
-  margin-left: 12px;
   color: #333;
   text-decoration: none;
   font-size: 14px;
+  font-weight: 600;
 }
 .header-nav .nav-items a:hover {
-  color: #0070f3;
+  color: #e40000;
+}
+
+/* 下段：カテゴリーナビゲーションバー */
+.category-nav {
+  background: #f5f5f5;
+  border-top: 1px solid #e5e5e5;
+}
+.category-nav ul {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+  list-style: none;
+  display: flex;         /* リストを横並びに */
+  gap: 0;
+}
+.category-nav ul li a {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+}
+.category-nav ul li a:hover {
+  color: #e40000;
+  border-bottom: 2px solid #e40000; /* ホバー時に下線 */
 }
 
 /* コンテナ（サイドバー＋メイン） */
