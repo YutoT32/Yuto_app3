@@ -96,6 +96,46 @@ header {
   border-bottom: 2px solid #e40000; /* ホバー時に下線 */
 }
 
+/* ヒーローバナー */
+.hero {
+  background: #222;          /* 背景色（後で画像に差し替え可能） */
+  color: #fff;
+  text-align: center;
+  padding: 80px 16px;        /* 上下に余白をたっぷり取る */
+}
+.hero-content {
+  max-width: 600px;
+  margin: 0 auto;            /* 中央揃え */
+}
+.hero-sub {
+  font-size: 13px;
+  letter-spacing: 3px;       /* 文字間を広げてスタイリッシュに */
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0 0 12px;
+}
+.hero-title {
+  font-size: 36px;
+  font-weight: 900;
+  margin: 0 0 28px;
+  line-height: 1.3;
+}
+/* CTAボタン：白背景・黒文字でユニクロ風 */
+.hero-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #fff;
+  color: #222;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+.hero-btn:hover {
+  background: #e40000;       /* ホバーで赤に */
+  color: #fff;
+}
+
 /* コンテナ（サイドバー＋メイン） */
 /* 外側（aside.sidebar＋main） */
 .container {
