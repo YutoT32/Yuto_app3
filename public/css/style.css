@@ -96,12 +96,49 @@ header {
   border-bottom: 2px solid #e40000; /* ホバー時に下線 */
 }
 
+/* トップページ専用：透明ヘッダー */
+header.transparent {
+  position: absolute;
+  width: 100%;
+  background: transparent;
+  border-bottom: none;
+}
+header.transparent .logo a {
+  color: #fff;
+}
+header.transparent .header-search .search-input {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+header.transparent .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+header.transparent .nav-items a {
+  color: #fff;
+}
+header.transparent .nav-items a:hover {
+  color: #ffcccc;
+}
+header.transparent .category-nav {
+  background: transparent;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+header.transparent .category-nav ul li a {
+  color: #fff;
+}
+header.transparent .category-nav ul li a:hover {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
 /* ヒーローバナー */
 .hero {
-  background: #222;          /* 背景色（後で画像に差し替え可能） */
+  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+              url('/images/climbing/climb1.JPG') center/cover no-repeat;
   color: #fff;
   text-align: center;
-  padding: 80px 16px;        /* 上下に余白をたっぷり取る */
+  padding: 260px 16px 180px;
 }
 .hero-content {
   max-width: 600px;
