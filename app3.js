@@ -20,7 +20,16 @@ const connection = mysql.createConnection({
 //ルーティングを設定
 //トップ画面（top.ejs）を表示するルーティング
 app.get('/', (req, res) => {
-    res.render('top.ejs');
+    connection.query(
+        "SELECT * FROM Products ORDER BY productID DESC LIMIT 4",
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send('DB error');
+            }
+            res.render('top.ejs', {recommendedProducts: results});
+        }
+    );
 });
 
 //一覧画面（index.ejs）を表示するルーティング
@@ -34,8 +43,6 @@ app.get('/index', (req, res) => {
                 console.log(error);
                 return res.status(500).send('DB error');
             }
-
-            console.log(results);
             //取得したデータをindex.ejsに渡して表示
             res.render('index.ejs', {Products: results});
         }

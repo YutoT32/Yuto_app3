@@ -68,20 +68,12 @@
         <h2>おすすめ商品</h2>
 
         <!-- JavascriptのforEachでrecommendedProductsを表示 -->
-        <!--
-        <% const recommendedProducts = [
-          {id: 1, name: 'Tシャツ', image: '/images/tops/Tシャツ.jpg'}, 
-          {id: 2, name: 'ズボン', image: '/images/pants/ズボン.jpg'}, 
-          {id: 3, name: 'セーター', image: '/images/sweaters/セーター.jpg'}, 
-          {id: 4, name: 'ワイシャツ', image: '/images/shirts/ワイシャツ.jpg'}
-        ]; %>
-        -->
         <div class="products-grid">
           <!-- 商品表示-->
           <% recommendedProducts.forEach((product) => { %>
           <div class="product-card">
             <img src="<%= product.image %>">
-            <h3><%= product.name %></h3>
+            <h3><%= product.productName %></h3>
           </div>
           <% }); %>
         </div>

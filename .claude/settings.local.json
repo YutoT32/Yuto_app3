@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mysql -u root -psatumaimo3 ecapp3 --default-character-set=utf8mb4 -e \"SELECT * FROM manufacturer;\")"
+    ]
+  }
+}
