@@ -45,24 +45,6 @@
     </section>
 
     <div class="container">
-      <!-- asideタグでサイドバーを明確化 -->
-      <aside class="sidebar" role="complementary" aria-label="category list">
-        <h3>カテゴリー </h3>
-
-        <!-- JavascriptのforEachでcategoriesを表示 -->
-        <% const categories = [
-          {id: 1, name: 'Tシャツ'}, 
-          {id: 2, name: 'ワイシャツ'}, 
-          {id: 3, name: 'ズボン'}
-        ]; %>
-        <ul>
-          <% categories.forEach((category) => { %>
-            <li><%= category.name %></li>
-          <% }); %>
-        </ul>
-
-      </aside>
-
       <!-- メインコンテンツ -->
       <main role="main">
         <h2>おすすめ商品</h2>

@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
 //トップ画面（top.ejs）を表示するルーティング
 app.get('/', (req, res) => {
     connection.query(
-        "SELECT * FROM Products ORDER BY productID DESC LIMIT 4",
+        "SELECT * FROM Products ORDER BY productID DESC LIMIT 6",
         (error, results) => {
             if (error) {
                 console.log(error);
