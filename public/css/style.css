@@ -248,6 +248,125 @@ main[role="main"] {
   object-fit: contain; /* アスペクト比を維持して収める */
 }
 
+/* 商品カード：リンク装飾リセット */
+.product-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.product-card-link:hover .product-card {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.product-card-price {
+  margin: 6px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+}
+
+/* 商品詳細ページ */
+.product-detail-main {
+  width: 100%;
+}
+.breadcrumb {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 24px;
+}
+.breadcrumb a {
+  color: #555;
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  color: #e40000;
+}
+.product-detail {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+.product-detail-image {
+  flex: 1;
+  max-width: 480px;
+  background: #fafafa;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 24px;
+  text-align: center;
+}
+.product-detail-image img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+}
+.product-detail-info {
+  flex: 1;
+  min-width: 0;
+}
+.product-detail-company {
+  font-size: 13px;
+  color: #888;
+  margin: 0 0 8px;
+}
+.product-detail-name {
+  font-size: 26px;
+  font-weight: 900;
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+.product-detail-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e40000;
+  margin: 0 0 24px;
+}
+.tax-note {
+  font-size: 14px;
+  color: #888;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.product-detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+.product-detail-table th,
+.product-detail-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+.product-detail-table th {
+  width: 100px;
+  color: #888;
+  font-weight: 600;
+  background: #fafafa;
+}
+.add-to-cart-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #333;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: 4px;
+  cursor: not-allowed;
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+.cart-note {
+  font-size: 12px;
+  color: #aaa;
+  margin: 8px 0 0;
+  text-align: center;
+}
+
 /* フッター */
 footer {
   text-align: center;

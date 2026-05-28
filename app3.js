@@ -49,6 +49,27 @@ app.get('/index', (req, res) => {
     );
 });
 
+//商品詳細画面（product.ejs）を表示するルーティング
+app.get('/products/:id', (req, res) => {
+    connection.query(
+        `SELECT p.*, m.companyName
+         FROM products p
+         LEFT JOIN manufacturer m ON p.companyID = m.companyID
+         WHERE p.productID = ?`,
+        [req.params.id],
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send('DB error');
+            }
+            if (results.length === 0) {
+                return res.status(404).send('商品が見つかりません');
+            }
+            res.render('product.ejs', { product: results[0] });
+        }
+    );
+});
+
 //カート画面（cart.ejs）を表示するルーティング
 app.get('/cart', (req, res) => {
     res.render('cart.ejs');

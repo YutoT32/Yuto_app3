@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= product.productName %> | ECサイト-app3</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="header-nav" role="navigation" aria-label="global navigation">
+        <div class="logo">
+          <a href="/">SHOP</a>
+        </div>
+        <div class="nav-items">
+          <a href="/index">一覧</a>
+          <a href="/cart">カート</a>
+          <a href="/login">ログイン</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <main role="main" class="product-detail-main">
+
+        <!-- パンくずリスト -->
+        <nav class="breadcrumb">
+          <a href="/">ホーム</a>
+          <span> &rsaquo; </span>
+          <a href="/index">商品一覧</a>
+          <span> &rsaquo; </span>
+          <span><%= product.productName %></span>
+        </nav>
+
+        <!-- 商品詳細レイアウト -->
+        <div class="product-detail">
+          <!-- 左：商品画像 -->
+          <div class="product-detail-image">
+            <img src="<%= product.image %>" alt="<%= product.productName %>">
+          </div>
+
+          <!-- 右：商品情報 -->
+          <div class="product-detail-info">
+            <p class="product-detail-company"><%= product.companyName %></p>
+            <h1 class="product-detail-name"><%= product.productName %></h1>
+            <p class="product-detail-price">¥<%= product.unitPrice.toLocaleString() %><span class="tax-note">（税込 ¥<%= Math.floor(product.unitPrice * 1.1).toLocaleString() %>）</span></p>
+
+            <table class="product-detail-table">
+              <tr>
+                <th>カラー</th>
+                <td><%= product.color %></td>
+              </tr>
+              <tr>
+                <th>メーカー</th>
+                <td><%= product.companyName %></td>
+              </tr>
+            </table>
+
+            <!-- カートに追加ボタン（未実装） -->
+            <button class="add-to-cart-btn" disabled>カートに追加</button>
+            <p class="cart-note">※ カート機能は準備中です</p>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Yuto Takahashi All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

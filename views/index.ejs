@@ -47,10 +47,13 @@
         <div class="products-grid">
           <!-- Productsを表示 -->
           <% Products.forEach((product) => { %>
-          <div class="product-card">
-            <img src="<%= product.image %>" alt="product image">
-            <h3><%= product.productName %></h3>
-          </div>
+          <a href="/products/<%= product.productID %>" class="product-card-link">
+            <div class="product-card">
+              <img src="<%= product.image %>" alt="product image">
+              <h3><%= product.productName %></h3>
+              <p class="product-card-price">¥<%= product.unitPrice.toLocaleString() %></p>
+            </div>
+          </a>
           <% }); %>
         </div>
 
