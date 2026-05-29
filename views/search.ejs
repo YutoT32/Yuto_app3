@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>「<%= keyword %>」の検索結果 | ECサイト-app3</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="header-nav" role="navigation" aria-label="global navigation">
+        <div class="logo">
+          <a href="/">SHOP</a>
+        </div>
+        <div class="header-search">
+          <form action="/search" method="GET">
+            <input type="text" name="q" class="search-input" placeholder="商品を検索..." value="<%= keyword %>">
+          </form>
+        </div>
+        <div class="nav-items">
+          <a href="/cart">カート</a>
+          <a href="/login">ログイン</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <main role="main">
+        <h2>「<%= keyword %>」の検索結果：<%= Products.length %>件</h2>
+
+        <% if (Products.length === 0) { %>
+          <p>該当する商品が見つかりませんでした。</p>
+        <% } else { %>
+          <div class="products-grid">
+            <% Products.forEach((product) => { %>
+            <a href="/products/<%= product.productID %>" class="product-card-link">
+              <div class="product-card">
+                <img src="<%= product.image %>" alt="<%= product.productName %>">
+                <h3><%= product.productName %></h3>
+                <p class="product-card-price">¥<%= product.unitPrice.toLocaleString() %></p>
+              </div>
+            </a>
+            <% }); %>
+          </div>
+        <% } %>
+
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Yuto Takahashi All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

@@ -8,13 +8,12 @@ const app = express();
 //静的ファイル（public配下）をHTTPで配信する
 app.use(express.static('public'));
 
-//データベースに接続するための設定
+//DBへの接続設定を持ったconnectionオブジェクトを作成
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'satumaimo3',
-    //DATABASE名「ecapp3」を指定
-    database: 'ecapp3'
+    database: 'ecapp3' //DATABASE名「ecapp3」を指定
 });
 
 //ルーティングを設定
@@ -27,7 +26,7 @@ app.get('/', (req, res) => {
                 console.log(error);
                 return res.status(500).send('DB error');
             }
-            res.render('top.ejs', {recommendedProducts: results});
+            res.render('top.ejs', {recommendedProducts: results}); // 配列resultsをtop.ejsに渡す
         }
     );
 });
@@ -43,29 +42,46 @@ app.get('/index', (req, res) => {
                 console.log(error);
                 return res.status(500).send('DB error');
             }
-            //取得したデータをindex.ejsに渡して表示
-            res.render('index.ejs', {Products: results});
+            res.render('index.ejs', {Products: results}); // 配列resultsをindex.ejsに渡す
         }
     );
 });
 
 //商品詳細画面（product.ejs）を表示するルーティング
-app.get('/products/:id', (req, res) => {
+app.get('/products/:id', (req, res) => { //「:id」はURLパラメータとして商品IDを受け取るための記述
     connection.query(
         `SELECT p.*, m.companyName
          FROM products p
          LEFT JOIN manufacturer m ON p.companyID = m.companyID
          WHERE p.productID = ?`,
-        [req.params.id],
+        [req.params.id], // 「:id」に入った値を取り出す→上記SQLクエリの「?」に入る
+        (error, results) => {
+            // DBエラーが発生した場合の処理
+            if (error) {
+                console.log(error);
+                return res.status(500).send('DB error');
+            }
+            // 商品が見つからなかった場合の処理
+            if (results.length === 0) {
+                return res.status(404).send('商品が見つかりません');
+            }
+            res.render('product.ejs', { product: results[0] }); // 配列resultsの最初の要素（オブジェクト）results[0]をproduct.ejsに渡す
+        }
+    );
+});
+
+//検索結果画面（search.ejs）を表示するルーティング
+app.get('/search', (req, res) => {
+    const keyword = req.query.q || ''; // クエリパラメータ（「?q=〇〇」のq）を取得。存在しない場合は空文字を使用
+    connection.query(
+        "SELECT * FROM Products WHERE productName LIKE ?",
+        [`%${keyword}%`], // keywordを取得。「%」は前方一致・後方一致のワイルドカード→上記SQLクエリの「?」に入る
         (error, results) => {
             if (error) {
                 console.log(error);
                 return res.status(500).send('DB error');
             }
-            if (results.length === 0) {
-                return res.status(404).send('商品が見つかりません');
-            }
-            res.render('product.ejs', { product: results[0] });
+            res.render('search.ejs', { keyword: keyword, Products: results }); // クエリパラメータのkeywordと配列resultsをsearch.ejsに渡す
         }
     );
 });
