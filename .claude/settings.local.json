@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(mysql -u root -psatumaimo3 ecapp3 --default-character-set=utf8mb4 -e \"SELECT * FROM manufacturer;\")",
-      "Bash(mysql -u root -psatumaimo3 ecapp3 --default-character-set=utf8mb4 -e \"DESCRIBE manufacturer; SELECT * FROM manufacturer;\" 2>/dev/null)"
+      "Bash(mysql -u root -psatumaimo3 ecapp3 --default-character-set=utf8mb4 -e \"DESCRIBE manufacturer; SELECT * FROM manufacturer;\" 2>/dev/null)",
+      "Bash(mysql -u root -psatumaimo3 ecapp3 -e \"SHOW TABLES;\")",
+      "Bash(mysql -u root -psatumaimo3 ecapp3 -e \"DESCRIBE customer;\")",
+      "Bash(mysql -u root -psatumaimo3 ecapp3 -e \"DESCRIBE purchase; SELECT * FROM customer LIMIT 3;\")"
     ]
   }
 }

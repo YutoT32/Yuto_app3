@@ -60,9 +60,15 @@
               </tr>
             </table>
 
-            <!-- カートに追加ボタン（未実装） -->
-            <button class="add-to-cart-btn" disabled>カートに追加</button>
-            <p class="cart-note">※ カート機能は準備中です</p>
+            <!-- カートに追加フォーム -->
+            <form action="/cart/add" method="POST">
+                <!-- 商品情報をhiddenで送信 -->
+                <input type="hidden" name="productID" value="<%= product.productID %>">
+                <input type="hidden" name="productName" value="<%= product.productName %>">
+                <input type="hidden" name="unitPrice" value="<%= product.unitPrice %>">
+                <input type="hidden" name="image" value="<%= product.image %>">
+                <button type="submit" class="add-to-cart-btn">カートに追加</button>
+            </form>
           </div>
         </div>
 

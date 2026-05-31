@@ -26,6 +26,47 @@
       <main role="main">
         <h2>カート</h2>
 
+        <% if (cart.length === 0) { %>
+          <p>カートに商品がありません。</p>
+          <a href="/index">商品一覧へ</a>
+        <% } else { %>
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>商品</th>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>数量</th>
+                <th>小計</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% cart.forEach((item) => { %>
+              <tr>
+                <td><img src="<%= item.image %>" alt="<%= item.productName %>" class="cart-item-img"></td>
+                <td><%= item.productName %></td>
+                <td>¥<%= item.unitPrice.toLocaleString() %></td>
+                <td><%= item.quantity %></td>
+                <td>¥<%= (item.unitPrice * item.quantity).toLocaleString() %></td>
+                <td>
+                  <form action="/cart/remove" method="POST">
+                    <input type="hidden" name="productID" value="<%= item.productID %>">
+                    <button type="submit" class="cart-remove-btn">削除</button>
+                  </form>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+
+          <div class="cart-total">
+            <p>合計：¥<%= totalPrice.toLocaleString() %></p>
+            <button class="checkout-btn" disabled>購入手続きへ</button>
+            <p class="checkout-note">※ 購入手続き機能は準備中です</p>
+          </div>
+        <% } %>
+
       </main>
     </div>
 

@@ -1,12 +1,24 @@
 // ExpressとMySQLモジュールの読み込み
 const express = require('express');
 const mysql = require('mysql2');
+const session = require('express-session');
 
 //Expressアプリケーションの作成
 const app = express();
 
 //静的ファイル（public配下）をHTTPで配信する
 app.use(express.static('public'));
+
+// POSTリクエストのフォームデータを解析する
+app.use(express.urlencoded({ extended: true }));
+
+// セッションの設定
+app.use(session({
+    secret: 'ecapp3-secret-key', // セッションIDの暗号化に使うキー
+    resave: false,               // セッションに変更がなくても保存し直さない
+    saveUninitialized: true,     // 新規セッションを即座に保存する（カート未追加でも番号札を発行）
+    cookie: { maxAge: 1000 * 60 * 60 * 24 } // Cookieの有効期限：24時間
+}));
 
 //DBへの接続設定を持ったconnectionオブジェクトを作成
 const connection = mysql.createConnection({
@@ -88,7 +100,44 @@ app.get('/search', (req, res) => {
 
 //カート画面（cart.ejs）を表示するルーティング
 app.get('/cart', (req, res) => {
-    res.render('cart.ejs');
+    const cart = req.session.cart || [];
+    // 合計金額を計算
+    const totalPrice = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+    res.render('cart.ejs', { cart, totalPrice });
+});
+
+// カートに商品を追加するルーティング
+app.post('/cart/add', (req, res) => {
+    const { productID, productName, unitPrice, image } = req.body;
+
+    if (!req.session.cart) {
+        req.session.cart = [];
+    }
+
+    // すでにカートに同じ商品があれば数量を増やす
+    const existingItem = req.session.cart.find(item => item.productID == productID);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        req.session.cart.push({
+            productID,
+            productName,
+            unitPrice: parseInt(unitPrice),
+            image,
+            quantity: 1
+        });
+    }
+
+    res.redirect('/cart');
+});
+
+// カートから商品を削除するルーティング
+app.post('/cart/remove', (req, res) => {
+    const { productID } = req.body;
+    if (req.session.cart) {
+        req.session.cart = req.session.cart.filter(item => item.productID != productID);
+    }
+    res.redirect('/cart');
 });
 
 //ログイン画面（login.ejs）を表示するルーティング
