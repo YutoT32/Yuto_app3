@@ -18,7 +18,14 @@
         </div>
         <div class="nav-items">
           <a href="/cart">カート</a>
-          <a href="/login">ログイン</a>
+          <% if (locals.user) { %>
+            <span class="nav-username"><%= locals.user.username %></span>
+            <form action="/logout" method="POST" class="nav-logout-form">
+              <button type="submit" class="nav-logout-btn">ログアウト</button>
+            </form>
+          <% } else { %>
+            <a href="/login">ログイン</a>
+          <% } %>
         </div>
       </nav>
     </header>

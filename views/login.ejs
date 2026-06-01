@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>ECサイト-app3</title>
+    <title>ログイン | ECサイト-app3</title>
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
@@ -15,17 +15,39 @@
         <div class="nav-items">
           <a href="/index">一覧</a>
           <a href="/cart">カート</a>
-          <a href="/login">ログイン</a>
+          <% if (locals.user) { %>
+            <span class="nav-username"><%= locals.user.username %></span>
+            <form action="/logout" method="POST" class="nav-logout-form">
+              <button type="submit" class="nav-logout-btn">ログアウト</button>
+            </form>
+          <% } else { %>
+            <a href="/login">ログイン</a>
+          <% } %>
         </div>
       </nav>
-
     </header>
-    <div class="container">
 
-      <!-- メインコンテンツ -->
-      <main role="main">
+    <div class="container">
+      <main role="main" class="auth-main">
         <h2>ログイン</h2>
 
+        <% if (error) { %>
+          <p class="auth-error"><%= error %></p>
+        <% } %>
+
+        <form action="/login" method="POST" class="auth-form">
+          <div class="auth-field">
+            <label for="email">メールアドレス</label>
+            <input type="email" id="email" name="email" required placeholder="example@mail.com">
+          </div>
+          <div class="auth-field">
+            <label for="password">パスワード</label>
+            <input type="password" id="password" name="password" required placeholder="パスワード">
+          </div>
+          <button type="submit" class="auth-btn">ログイン</button>
+        </form>
+
+        <p class="auth-link">アカウントをお持ちでない方は<a href="/register">会員登録</a></p>
       </main>
     </div>
 

@@ -2,6 +2,7 @@
 const express = require('express');
 const mysql = require('mysql2');
 const session = require('express-session');
+const bcrypt = require('bcryptjs');
 
 //Expressアプリケーションの作成
 const app = express();
@@ -19,6 +20,12 @@ app.use(session({
     saveUninitialized: true,     // 新規セッションを即座に保存する（カート未追加でも番号札を発行）
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // Cookieの有効期限：24時間
 }));
+
+// ログイン中のユーザー情報をすべてのビューで利用できるようにする
+app.use((req, res, next) => {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 //DBへの接続設定を持ったconnectionオブジェクトを作成
 const connection = mysql.createConnection({
@@ -134,15 +141,84 @@ app.post('/cart/add', (req, res) => {
 // カートから商品を削除するルーティング
 app.post('/cart/remove', (req, res) => {
     const { productID } = req.body;
+
     if (req.session.cart) {
         req.session.cart = req.session.cart.filter(item => item.productID != productID);
     }
+
     res.redirect('/cart');
 });
 
 //ログイン画面（login.ejs）を表示するルーティング
 app.get('/login', (req, res) => {
-    res.render('login.ejs');
+    res.render('login.ejs', { error: null });
+});
+
+// ログイン処理
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    connection.query(
+        'SELECT * FROM customer WHERE email = ?',
+        [email],
+        async (error, results) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).send('DB error');
+            }
+            if (results.length === 0) {
+                return res.render('login.ejs', { error: 'メールアドレスまたはパスワードが正しくありません。' });
+            }
+
+            const user = results[0];
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                return res.render('login.ejs', { error: 'メールアドレスまたはパスワードが正しくありません。' });
+            }
+
+            // セッションにユーザー情報を保存
+            req.session.user = { customerID: user.customerID, username: user.customerName };
+            res.redirect('/');
+        }
+    );
+});
+
+// ログアウト処理
+app.post('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/');
+    });
+});
+
+// 会員登録画面（register.ejs）を表示するルーティング
+app.get('/register', (req, res) => {
+    res.render('register.ejs', { error: null });
+});
+
+// 会員登録処理
+app.post('/register', async (req, res) => {
+    const { username, address, email, password } = req.body;
+
+    // パスワードをハッシュ化
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    connection.query(
+        'INSERT INTO customer (customerName, address, email, password) VALUES (?, ?, ?, ?)',
+        [username, address, email, hashedPassword],
+        (error, results) => {
+            if (error) {
+                // メールアドレスが重複している場合
+                if (error.code === 'ER_DUP_ENTRY') {
+                    return res.render('register.ejs', { error: 'このメールアドレスはすでに使用されています。' });
+                }
+                console.log(error);
+                return res.status(500).send('DB error');
+            }
+            // 登録成功後、ログイン画面へ
+            res.redirect('/login');
+        }
+    );
 });
 
 //サーバーを起動
