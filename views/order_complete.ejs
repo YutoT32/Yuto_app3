@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>注文完了 | ECサイト-app3</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="header-nav" role="navigation" aria-label="global navigation">
+        <div class="logo">
+          <a href="/">SHOP</a>
+        </div>
+        <div class="nav-items">
+          <a href="/index">一覧</a>
+          <a href="/cart">カート</a>
+          <% if (locals.user) { %>
+            <span class="nav-username"><%= locals.user.username %></span>
+            <form action="/logout" method="POST" class="nav-logout-form">
+              <button type="submit" class="nav-logout-btn">ログアウト</button>
+            </form>
+          <% } else { %>
+            <a href="/login">ログイン</a>
+          <% } %>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <main role="main" class="auth-main">
+        <h2>注文が完了しました</h2>
+        <p>注文番号：<strong>#<%= orderID %></strong></p>
+        <p>ご注文ありがとうございます。</p>
+        <a href="/index" class="checkout-btn">買い物を続ける</a>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Yuto Takahashi All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>

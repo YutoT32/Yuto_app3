@@ -69,8 +69,11 @@
 
           <div class="cart-total">
             <p>合計：¥<%= totalPrice.toLocaleString() %></p>
-            <button class="checkout-btn" disabled>購入手続きへ</button>
-            <p class="checkout-note">※ 購入手続き機能は準備中です</p>
+            <% if (locals.user) { %>
+              <a href="/order/confirm" class="checkout-btn">購入手続きへ</a>
+            <% } else { %>
+              <a href="/login" class="checkout-btn">ログインして購入</a>
+            <% } %>
           </div>
         <% } %>
 

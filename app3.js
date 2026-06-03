@@ -196,6 +196,145 @@ app.get('/register', (req, res) => {
     res.render('register.ejs', { error: null });
 });
 
+// ログイン必須ミドルウェア
+function requireLogin(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+    next();
+}
+
+// 注文確認画面
+app.get('/order/confirm', requireLogin, (req, res) => {
+    const cart = req.session.cart || [];
+    if (cart.length === 0) {
+        return res.redirect('/cart');
+    }
+    const totalPrice = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+    res.render('order_confirm.ejs', { cart, totalPrice });
+});
+
+// 注文処理
+app.post('/order/place', requireLogin, (req, res) => {
+    const cart = req.session.cart || [];
+    if (cart.length === 0) {
+        return res.redirect('/cart');
+    }
+    const customerID = req.session.user.customerID;
+
+    connection.beginTransaction((err) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).send('DB error');
+        }
+
+        // 在庫確認（FOR UPDATE で行ロック）
+        const productIDs = cart.map(item => item.productID);
+        connection.query(
+            'SELECT productID, stock FROM products WHERE productID IN (?) FOR UPDATE',
+            [productIDs],
+            (error, stockResults) => {
+                if (error) {
+                    return connection.rollback(() => {
+                        console.log(error);
+                        res.status(500).send('DB error');
+                    });
+                }
+
+                // 在庫チェック
+                const stockMap = {};
+                stockResults.forEach(row => { stockMap[row.productID] = row.stock; });
+
+                const insufficientItem = cart.find(item => (stockMap[item.productID] || 0) < item.quantity);
+                if (insufficientItem) {
+                    return connection.rollback(() => {
+                        const totalPrice = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+                        res.render('order_confirm.ejs', {
+                            cart,
+                            totalPrice,
+                            error: `「${insufficientItem.productName}」の在庫が不足しています。`
+                        });
+                    });
+                }
+
+                // ordersテーブルにINSERT
+                connection.query(
+                    'INSERT INTO orders (customerID) VALUES (?)',
+                    [customerID],
+                    (error, orderResult) => {
+                        if (error) {
+                            return connection.rollback(() => {
+                                console.log(error);
+                                res.status(500).send('DB error');
+                            });
+                        }
+
+                        const orderID = orderResult.insertId;
+
+                        // order_itemsにまとめてINSERT
+                        const orderItems = cart.map(item => [orderID, item.productID, item.quantity, item.unitPrice]);
+                        connection.query(
+                            'INSERT INTO order_items (orderID, productID, quantity, unitPrice) VALUES ?',
+                            [orderItems],
+                            (error) => {
+                                if (error) {
+                                    return connection.rollback(() => {
+                                        console.log(error);
+                                        res.status(500).send('DB error');
+                                    });
+                                }
+
+                                // 在庫数を商品ごとに減算
+                                const updateStockSequentially = (index) => {
+                                    if (index >= cart.length) {
+                                        // 全更新完了 → COMMIT
+                                        return connection.commit((err) => {
+                                            if (err) {
+                                                return connection.rollback(() => {
+                                                    console.log(err);
+                                                    res.status(500).send('DB error');
+                                                });
+                                            }
+                                            req.session.cart = [];
+                                            req.session.lastOrderID = orderID;
+                                            res.redirect('/order/complete');
+                                        });
+                                    }
+                                    const item = cart[index];
+                                    connection.query(
+                                        'UPDATE products SET stock = stock - ? WHERE productID = ?',
+                                        [item.quantity, item.productID],
+                                        (error) => {
+                                            if (error) {
+                                                return connection.rollback(() => {
+                                                    console.log(error);
+                                                    res.status(500).send('DB error');
+                                                });
+                                            }
+                                            updateStockSequentially(index + 1);
+                                        }
+                                    );
+                                };
+                                updateStockSequentially(0);
+                            }
+                        );
+                    }
+                );
+            }
+        );
+    });
+});
+
+// 注文完了画面
+app.get('/order/complete', requireLogin, (req, res) => {
+    const orderID = req.session.lastOrderID;
+    if (!orderID) {
+        return res.redirect('/');
+    }
+    delete req.session.lastOrderID;
+    res.render('order_complete.ejs', { orderID });
+});
+
 // 会員登録処理
 app.post('/register', async (req, res) => {
     const { username, address, email, password } = req.body;

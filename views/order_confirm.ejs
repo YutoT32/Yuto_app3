@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>注文確認 | ECサイト-app3</title>
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <header>
+      <nav class="header-nav" role="navigation" aria-label="global navigation">
+        <div class="logo">
+          <a href="/">SHOP</a>
+        </div>
+        <div class="nav-items">
+          <a href="/index">一覧</a>
+          <a href="/cart">カート</a>
+          <% if (locals.user) { %>
+            <span class="nav-username"><%= locals.user.username %></span>
+            <form action="/logout" method="POST" class="nav-logout-form">
+              <button type="submit" class="nav-logout-btn">ログアウト</button>
+            </form>
+          <% } else { %>
+            <a href="/login">ログイン</a>
+          <% } %>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container">
+      <main role="main">
+        <h2>注文確認</h2>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+          <p class="auth-error"><%= error %></p>
+        <% } %>
+
+        <table class="cart-table">
+          <thead>
+            <tr>
+              <th>商品</th>
+              <th>商品名</th>
+              <th>単価</th>
+              <th>数量</th>
+              <th>小計</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% cart.forEach((item) => { %>
+            <tr>
+              <td><img src="<%= item.image %>" alt="<%= item.productName %>" class="cart-item-img"></td>
+              <td><%= item.productName %></td>
+              <td>¥<%= item.unitPrice.toLocaleString() %></td>
+              <td><%= item.quantity %></td>
+              <td>¥<%= (item.unitPrice * item.quantity).toLocaleString() %></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+
+        <div class="cart-total">
+          <p>合計：¥<%= totalPrice.toLocaleString() %></p>
+          <form action="/order/place" method="POST">
+            <button type="submit" class="checkout-btn">注文を確定する</button>
+          </form>
+          <a href="/cart" class="cart-back-link">カートに戻る</a>
+        </div>
+
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Yuto Takahashi All Rights Reserved.</p>
+    </footer>
+  </body>
+</html>
